@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.0;
 
-import "openzeppelin-contracts/contracts/security/ReentrancyGuard.sol";
-import "openzeppelin-contracts/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@gateway/contracts/GatedERC2771.sol";
-import "@gateway/contracts/MultiERC2771Context.sol";
-import "./interfaces/IForwarder.sol";
+import "@gateway/contracts/MultiERC2771ContextNonUpgradeable.sol";
+import "on-chain-identity-gateway/ethereum/smart-contract/contracts/MultiERC2771ContextNonUpgradeable.sol";
 
-contract GatedForwarder is GatedERC2771, MultiERC2771Context, Ownable {
+contract GatedForwarder is GatedERC2771, Ownable, ReentrancyGuard {
     event ForwardResult(bool);
 
     struct ForwardRequest {
@@ -26,9 +26,9 @@ contract GatedForwarder is GatedERC2771, MultiERC2771Context, Ownable {
     constructor(
         address gatewayTokenContract,
         uint256 gatekeeperNetwork
-    ) GatedERC2771(gatewayTokenContract, gatekeeperNetwork) EIP712("GatedForwarder", "0.0.1") {}
+    ) GatedERC2771(gatewayTokenContract, gatekeeperNetwork) {}
 
-    function execute(ForwardRequest req) gated external payable nonReentrant returns (bool, bytes memory) {
+    function execute(ForwardRequest calldata req) gated nonReentrant external payable returns (bool, bytes memory) {
         // TODO is msg.value needed here? Probably the target receives msg.value either way
         (bool success, bytes memory returndata) = req.to.call{value: msg.value}(req.data);
 
@@ -42,5 +42,25 @@ contract GatedForwarder is GatedERC2771, MultiERC2771Context, Ownable {
         emit ForwardResult(success);
 
         return (success, returndata);
+    }
+
+    function _msgSender()
+    internal
+    view
+    virtual
+    override(MultiERC2771ContextNonUpgradeable, Context)
+    returns (address sender)
+    {
+        return MultiERC2771ContextNonUpgradeable._msgSender();
+    }
+
+    function _msgData()
+    internal
+    view
+    virtual
+    override(MultiERC2771ContextNonUpgradeable, Context)
+    returns (bytes calldata)
+    {
+        return MultiERC2771ContextNonUpgradeable._msgData();
     }
 }

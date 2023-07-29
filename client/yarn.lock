@@ -119,6 +119,86 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.18.17.tgz#bcb2e042631b3c15792058e189ed879a22b2968b"
   integrity sha512-fGEb8f2BSA3CW7riJVurug65ACLuQAzKq0SSqkY2b2yHHH0MzDfbLyKIGzHwOI/gkHcxM/leuSW6D5w/LMNitA==
 
+"@ethersproject/address@^6.0.0-beta.1":
+  version "6.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@ethersproject/address/-/address-6.0.0-beta.2.tgz#1a1d3569bf1533d4ec91019d9feff53ca5144842"
+  integrity sha512-FnCEwDD3edepRXv4Y2wuGyLE1NiXEplYzDkHIU77LLzxYsrmcoiJuFFeNIDPJOjPYGUq01Mv2UEAxYGq/RJsQA==
+  dependencies:
+    "@ethersproject/bytes" "^6.0.0-beta.1"
+    "@ethersproject/crypto" "^6.0.0-beta.1"
+    "@ethersproject/logger" "^6.0.0-beta.1"
+    "@ethersproject/rlp" "^6.0.0-beta.1"
+
+"@ethersproject/bytes@^6.0.0-beta.1":
+  version "6.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@ethersproject/bytes/-/bytes-6.0.0-beta.3.tgz#22ca0d976badfc8a6d92a88256e9998bf80b3bc6"
+  integrity sha512-yA496ZVE/GsYYSMsjdOaWGHHYz+S2EEeG8xNKnSoPo0tUzPa+XC8bfURSv5p1Og+Sw5JsZahADlisOPzN6v+LQ==
+  dependencies:
+    "@ethersproject/logger" "^6.0.0-beta.1"
+
+"@ethersproject/crypto@^6.0.0-beta.1":
+  version "6.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@ethersproject/crypto/-/crypto-6.0.0-beta.1.tgz#9b59783e940eb8aeca4ed59d5181b88782bedd21"
+  integrity sha512-Rqo/2Mc2iNAYPnXM24YcReQS5N/8PmYcD6ptQHeble2iBvfXuvjW9WJ7CrRwA3mO+UJAW0uidfUVJ7kFdfgFCQ==
+  dependencies:
+    "@ethersproject/bytes" "^6.0.0-beta.1"
+    "@ethersproject/logger" "^6.0.0-beta.1"
+    "@noble/hashes" "1.0.0"
+
+"@ethersproject/logger@^6.0.0-beta.1":
+  version "6.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@ethersproject/logger/-/logger-6.0.0-beta.7.tgz#1ac632dd86982d1776e96b03b310e7d6a844a342"
+  integrity sha512-n+ss5A6FoN75+9FLlPHcbTxdqi9BqdOYN+2Hw5G7I9/AoFTvBHR+7ywJDI+aia77KCoylsTndE3sja3456J2rA==
+
+"@ethersproject/math@^6.0.0-beta.1":
+  version "6.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@ethersproject/math/-/math-6.0.0-beta.1.tgz#5b518a34e75eaaae17849192df78515833bff2c4"
+  integrity sha512-IcJgiw/q357atCdSSvkSAFjnRZapb2OZMGUw4p/e3hSRVccQB5+/JKBPRm5KIPE8uxgp1G3T34hoeXreu87Hdw==
+  dependencies:
+    "@ethersproject/bytes" "^6.0.0-beta.1"
+    "@ethersproject/logger" "^6.0.0-beta.1"
+
+"@ethersproject/properties@^6.0.0-beta.1":
+  version "6.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/@ethersproject/properties/-/properties-6.0.0-beta.6.tgz#27df59014de5f14793fae16516ad6fdc73df94ac"
+  integrity sha512-dVDsFK05qPSlqK03QAOiLGcfo12thi1qzLObBashmbOwF2DXpC8Xk/dF4EXZ/FXXtD8NNrAHsFg7fRl7lKDeFQ==
+  dependencies:
+    "@ethersproject/logger" "^6.0.0-beta.1"
+
+"@ethersproject/rlp@^6.0.0-beta.1":
+  version "6.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@ethersproject/rlp/-/rlp-6.0.0-beta.2.tgz#e3e3dab34166e8d1c2d2a92e2fed456c868bec63"
+  integrity sha512-wGXvHMsiE0YdvpCEbZHUXwbGgGEPHd7eRedmjQrJ/tqBOHmqYLDkwYiQL9iCW2rfdsh60p0jRBF3Htb/WmWjmg==
+  dependencies:
+    "@ethersproject/bytes" "^6.0.0-beta.1"
+    "@ethersproject/logger" "^6.0.0-beta.1"
+
+"@ethersproject/signing-key@^6.0.0-beta.1":
+  version "6.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@ethersproject/signing-key/-/signing-key-6.0.0-beta.2.tgz#79906f3c16934f08355a79e6065ecfcca18dbb42"
+  integrity sha512-mv3BSRw/KPySuPebxu/XbuzHSbmodNtRuU3HeOKv65qiGo9XtqMp8aikl23BhqdyNQZQW1f+ACzC/kVycHls0Q==
+  dependencies:
+    "@ethersproject/bytes" "^6.0.0-beta.1"
+    "@ethersproject/crypto" "^6.0.0-beta.1"
+    "@ethersproject/logger" "^6.0.0-beta.1"
+    "@ethersproject/math" "^6.0.0-beta.1"
+    "@ethersproject/properties" "^6.0.0-beta.1"
+    "@noble/secp256k1" "1.5.5"
+
+"@ethersproject/transaction@^6.0.0-beta.2":
+  version "6.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@ethersproject/transaction/-/transaction-6.0.0-beta.2.tgz#5ab80a3a922415c3aa39a9681a8135c22a4452df"
+  integrity sha512-zHAS95LAadbN2IAqHqjJwvK150/klqIK9HTnTpE6vVCQpXWCx2Ici0/jtywYMCxT5WdtUnDNT9FHGIHecs7agA==
+  dependencies:
+    "@ethersproject/address" "^6.0.0-beta.1"
+    "@ethersproject/bytes" "^6.0.0-beta.1"
+    "@ethersproject/crypto" "^6.0.0-beta.1"
+    "@ethersproject/logger" "^6.0.0-beta.1"
+    "@ethersproject/math" "^6.0.0-beta.1"
+    "@ethersproject/properties" "^6.0.0-beta.1"
+    "@ethersproject/rlp" "^6.0.0-beta.1"
+    "@ethersproject/signing-key" "^6.0.0-beta.1"
+
 "@jridgewell/gen-mapping@^0.3.2":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.3.tgz#7e02e6eb5df901aaedb08514203b096614024098"
@@ -168,6 +248,16 @@
   dependencies:
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
+
+"@noble/hashes@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.0.0.tgz#d5e38bfbdaba174805a4e649f13be9a9ed3351ae"
+  integrity sha512-DZVbtY62kc3kkBtMHqwCOfXrT/hnoORy5BJ4+HU1IR59X0KWAOqsfzQPcUl/lQLlG7qXbe/fZ3r/emxtAl+sqg==
+
+"@noble/secp256k1@1.5.5":
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/@noble/secp256k1/-/secp256k1-1.5.5.tgz#315ab5745509d1a8c8e90d0bdf59823ccf9bcfc3"
+  integrity sha512-sZ1W6gQzYnu45wPrWx8D3kwI2/U29VYTx9OjbDAd7jwRItJ0cSTMPRL/C8AWZFn9kWFLQGqEXVEE86w4Z8LpIQ==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"

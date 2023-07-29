@@ -3,7 +3,8 @@ src = "src"
 out = "out"
 libs = ["lib"]
 remappings = [
-    "@gateway/=lib/on-chain-identity-gateway/ethereum/smart-contract"
+    "@gateway/=lib/on-chain-identity-gateway/ethereum/smart-contract/",
+    "@openzeppelin/=lib/openzeppelin-contracts/",
 ]
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
