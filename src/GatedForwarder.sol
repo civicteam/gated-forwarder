@@ -10,6 +10,11 @@ import "./interfaces/IForwarder.sol";
 contract GatedForwarder is GatedERC2771, MultiERC2771Context, Ownable {
     event ForwardResult(bool);
 
+    struct ForwardRequest {
+        address to;
+        bytes data;
+    }
+
     function addForwarder(address forwarder) external onlyOwner {
         _addForwarder(forwarder);
     }
@@ -23,9 +28,9 @@ contract GatedForwarder is GatedERC2771, MultiERC2771Context, Ownable {
         uint256 gatekeeperNetwork
     ) GatedERC2771(gatewayTokenContract, gatekeeperNetwork) EIP712("GatedForwarder", "0.0.1") {}
 
-    function execute() gated external payable nonReentrant returns (bool, bytes memory) {
+    function execute(ForwardRequest req) gated external payable nonReentrant returns (bool, bytes memory) {
         // TODO is msg.value needed here? Probably the target receives msg.value either way
-        (bool success, bytes memory returndata) = req.to.call{value: msg.value}(msg.data);
+        (bool success, bytes memory returndata) = req.to.call{value: msg.value}(req.data);
 
         // Forward the revert message from the call if the call failed.
         if (success == false) {
