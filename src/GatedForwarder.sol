@@ -2,12 +2,11 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@gateway/contracts/GatedERC2771.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@gateway/contracts/GatedERC2771Upgradeable.sol";
 import "@gateway/contracts/MultiERC2771ContextNonUpgradeable.sol";
-import "on-chain-identity-gateway/ethereum/smart-contract/contracts/MultiERC2771ContextNonUpgradeable.sol";
 
-contract GatedForwarder is GatedERC2771, Ownable, ReentrancyGuard {
+contract GatedForwarder is GatedERC2771Upgradeable, OwnableUpgradeable, ReentrancyGuard {
     event ForwardResult(bool);
 
     struct ForwardRequest {
@@ -23,10 +22,17 @@ contract GatedForwarder is GatedERC2771, Ownable, ReentrancyGuard {
         _removeForwarder(forwarder);
     }
 
-    constructor(
+    function initialize(
         address gatewayTokenContract,
-        uint256 gatekeeperNetwork
-    ) GatedERC2771(gatewayTokenContract, gatekeeperNetwork) {}
+        uint256 gatekeeperNetwork,
+        address owner,
+        address[] calldata trustedForwarders
+    ) external initializer {
+        __GatedERC2771Upgradeable_init(gatewayTokenContract, gatekeeperNetwork, trustedForwarders);
+        // initialize ownership of the forwarder to the deploying factory, and transfer to the owner
+        __Ownable_init();
+        transferOwnership(owner);
+    }
 
     function execute(ForwardRequest calldata req) gated nonReentrant external payable returns (bool, bytes memory) {
         // TODO is msg.value needed here? Probably the target receives msg.value either way
