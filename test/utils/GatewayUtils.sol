@@ -41,4 +41,9 @@ contract GatewayUtils {
         ERC1967Proxy proxy = new ERC1967Proxy(address(gatewayTokenImpl), initGatewayToken);
         return address(proxy);
     }
+
+    function createGatekeeperNetwork(GatewayToken gatewayToken, uint256 slotId, address gatekeeper) public {
+        gatewayToken.createNetwork(slotId, "TEST", false, address(0));
+        gatewayToken.addGatekeeper(gatekeeper, slotId);
+    }
 }

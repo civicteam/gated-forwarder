@@ -9,6 +9,7 @@ import "@gateway/contracts/GatedERC2771.sol";
 import "@openzeppelin/contracts/metatx/MinimalForwarder.sol";
 import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
+import "../src/GatedForwarderFactory.sol";
 import "../src/GatedForwarder.sol";
 import "./utils/TargetContract.sol";
 import "./utils/SigUtils.sol";
@@ -21,8 +22,8 @@ contract GatedForwarderTest is Test, GatewayUtils, ForwardUtils {
     SigUtils internal sigUtils;
 
     MinimalForwarder public erc712Forwarder;
-    GatedForwarder public gatedForwarder;
     TargetContract public targetContract;
+    address public gatedForwarderAddress;
 
     GatewayToken public gatewayToken;
 
@@ -58,13 +59,21 @@ contract GatedForwarderTest is Test, GatewayUtils, ForwardUtils {
 
         erc712Forwarder = new MinimalForwarder();
 
-        gatedForwarder = new GatedForwarder(address(gatewayToken), 0);
-        gatedForwarder.addForwarder(address(erc712Forwarder));
+        address[] memory trustedForwarders = new address[](1);
+        trustedForwarders[0] = address(erc712Forwarder);
 
-        targetContract = new TargetContract(address(gatedForwarder));
+        GatedForwarder gatedForwarderImpl = new GatedForwarder();
+        GatedForwarderFactory factory = new GatedForwarderFactory(address(gatedForwarderImpl));
+        gatedForwarderAddress = factory.createContract(address(gatewayTokenProxy), 0, admin, trustedForwarders);
+//        gatedForwarder = new GatedForwarder(address(gatewayToken), 0);
+//        gatedForwarder.addForwarder(address(erc712Forwarder));
 
-        gatewayToken.createNetwork(0, "TEST", false, address(0));
-        gatewayToken.addGatekeeper(address(gatekeeper), 0);
+        targetContract = new TargetContract(gatedForwarderAddress);
+
+        createGatekeeperNetwork(gatewayToken, 0, gatekeeper);
+
+//        gatewayToken.createNetwork(0, "TEST", false, address(0));
+//        gatewayToken.addGatekeeper(address(gatekeeper), 0);
 
         vm.prank(gatekeeper);
         gatewayToken.mint(userWithPass, 0, 0, 0, nullCharge);
@@ -82,7 +91,7 @@ contract GatedForwarderTest is Test, GatewayUtils, ForwardUtils {
         bytes memory signature;
         (request, signature) = createForwardedRequest(
             address(erc712Forwarder),
-            address(gatedForwarder),
+            gatedForwarderAddress,
             address(targetContract),
             targetData,
             // This user has a pass
@@ -107,7 +116,7 @@ contract GatedForwarderTest is Test, GatewayUtils, ForwardUtils {
         bytes memory signature;
         (request, signature) = createForwardedRequest(
             address(erc712Forwarder),
-            address(gatedForwarder),
+            gatedForwarderAddress,
             address(targetContract),
             targetData,
             // This user has no pass

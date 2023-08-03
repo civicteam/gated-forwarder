@@ -38,6 +38,7 @@ contract GatedForwarderFactory is Ownable {
         bytes32 salt = getSalt(gatewayTokenContract, gatekeeperNetwork);
         // deploy a minimal proxy contract
         address proxy = Clones.cloneDeterministic(implementationAddress, salt);
+        console.log("GatedForwarderFactory.createContract: proxy=%s", proxy);
         GatedForwarder(proxy).initialize(
             gatewayTokenContract,
             gatekeeperNetwork,
