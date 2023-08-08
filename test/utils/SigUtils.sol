@@ -15,17 +15,14 @@ contract SigUtils {
     }
 
     bytes32 private constant _TYPEHASH =
-    keccak256("ForwardRequest(address from,address to,uint256 value,uint256 gas,uint256 nonce,bytes data)");
+        keccak256("ForwardRequest(address from,address to,uint256 value,uint256 gas,uint256 nonce,bytes data)");
 
     bytes32 private constant _DOMAIN_SEPARATOR_TYPEHASH =
-    keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
-
+        keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
 
     // computes the hash of the fully encoded EIP-712 message for the domain, which can be used to recover the signer
     function getTypedDataHash(MinimalForwarder.ForwardRequest memory req) external view returns (bytes32) {
-        return _hashTypedDataV4(
-            getStructHash(req)
-        );
+        return _hashTypedDataV4(getStructHash(req));
     }
 
     function _hashTypedDataV4(bytes32 structHash) internal view virtual returns (bytes32) {
@@ -37,13 +34,8 @@ contract SigUtils {
     }
 
     // computes the hash of a forward request
-    function getStructHash(MinimalForwarder.ForwardRequest memory _forwardRequest)
-    internal
-    pure
-    returns (bytes32)
-    {
-        return
-            keccak256(
+    function getStructHash(MinimalForwarder.ForwardRequest memory _forwardRequest) internal pure returns (bytes32) {
+        return keccak256(
             abi.encode(
                 _TYPEHASH,
                 _forwardRequest.from,

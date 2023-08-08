@@ -19,10 +19,7 @@ contract ForwardUtils is Test {
         SigUtils sigUtils = new SigUtils("MinimalForwarder", "0.0.1", erc712Forwarder);
         bytes memory data = abi.encodeWithSelector(
             GatedForwarder(address(0)).execute.selector,
-            GatedForwarder.ForwardRequest({
-                to: targetContract,
-                data: encodedData
-            })
+            GatedForwarder.ForwardRequest({to: targetContract, data: encodedData})
         );
         MinimalForwarder.ForwardRequest memory forwardRequest = MinimalForwarder.ForwardRequest({
             from: signer,

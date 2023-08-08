@@ -4,8 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@gateway/contracts/GatedERC2771Upgradeable.sol";
-import "@gateway/contracts/MultiERC2771Context.sol";
-import "forge-std/console.sol";
+import "@gateway/contracts/MultiERC2771ContextUpgradeable.sol";
 
 contract GatedForwarder is GatedERC2771Upgradeable, OwnableUpgradeable, ReentrancyGuard {
     event ForwardResult(bool);
@@ -29,15 +28,13 @@ contract GatedForwarder is GatedERC2771Upgradeable, OwnableUpgradeable, Reentran
         address owner,
         address[] calldata trustedForwarders
     ) external initializer {
-        console.log("Initializing GatedForwarder");
         __GatedERC2771Upgradeable_init(gatewayTokenContract, gatekeeperNetwork, trustedForwarders);
-        console.log("Initializing Ownable");
         // initialize ownership of the forwarder to the deploying factory, and transfer to the owner
         __Ownable_init();
         transferOwnership(owner);
     }
 
-    function execute(ForwardRequest calldata req) gated nonReentrant external payable returns (bool, bytes memory) {
+    function execute(ForwardRequest calldata req) external payable gated nonReentrant returns (bool, bytes memory) {
         // TODO is msg.value needed here? Probably the target receives msg.value either way
         (bool success, bytes memory returndata) = req.to.call{value: msg.value}(req.data);
 
@@ -54,22 +51,22 @@ contract GatedForwarder is GatedERC2771Upgradeable, OwnableUpgradeable, Reentran
     }
 
     function _msgSender()
-    internal
-    view
-    virtual
-    override(MultiERC2771Context, ContextUpgradeable)
-    returns (address sender)
+        internal
+        view
+        virtual
+        override(MultiERC2771ContextUpgradeable, ContextUpgradeable)
+        returns (address sender)
     {
-        return MultiERC2771Context._msgSender();
+        return MultiERC2771ContextUpgradeable._msgSender();
     }
 
     function _msgData()
-    internal
-    view
-    virtual
-    override(MultiERC2771Context, ContextUpgradeable)
-    returns (bytes calldata)
+        internal
+        view
+        virtual
+        override(MultiERC2771ContextUpgradeable, ContextUpgradeable)
+        returns (bytes calldata)
     {
-        return MultiERC2771Context._msgData();
+        return MultiERC2771ContextUpgradeable._msgData();
     }
 }

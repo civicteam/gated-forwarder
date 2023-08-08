@@ -7,7 +7,7 @@ import "@gateway/contracts/library/Charge.sol";
 import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
 contract GatewayUtils {
-    function makeNullCharge() public pure returns(Charge memory) {
+    function makeNullCharge() public pure returns (Charge memory) {
         return Charge({
             value: 0,
             chargeType: ChargeType.NONE,
@@ -17,25 +17,17 @@ contract GatewayUtils {
         });
     }
 
-    function deployFlagsStorage(address admin) public returns(address){
+    function deployFlagsStorage(address admin) public returns (address) {
         FlagsStorage flagsStorageImpl = new FlagsStorage();
-        bytes memory initFlagsStorage = abi.encodeWithSelector(
-            FlagsStorage(address(0)).initialize.selector,
-            admin
-        );
+        bytes memory initFlagsStorage = abi.encodeWithSelector(FlagsStorage(address(0)).initialize.selector, admin);
         ERC1967Proxy flagsStorageProxy = new ERC1967Proxy(address(flagsStorageImpl), initFlagsStorage);
         return address(flagsStorageProxy);
     }
 
-    function deployGatewayToken(address admin, address flagsStorage) public returns(address) {
+    function deployGatewayToken(address admin, address flagsStorage) public returns (address) {
         GatewayToken gatewayTokenImpl = new GatewayToken();
         bytes memory initGatewayToken = abi.encodeWithSelector(
-            GatewayToken(address(0)).initialize.selector,
-            "Test",
-            "TEST",
-            admin,
-            address(flagsStorage),
-            new address[](0)
+            GatewayToken(address(0)).initialize.selector, "Test", "TEST", admin, address(flagsStorage), new address[](0)
         );
 
         ERC1967Proxy proxy = new ERC1967Proxy(address(gatewayTokenImpl), initGatewayToken);

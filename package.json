@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "deploy-forwarder-factory": "forge script script/DeployFactory.sol --broadcast --verify --rpc-url $1",
+    "deploy-forwarder": "forge script script/DeployForwarder.sol --sig 'run(address factoryAddress, uint256 gatekeeperNetwork)' --broadcast --rpc-url mumbai ${GATED_FORWARDER_FACTORY}",
+    "verify-implementation": "forge verify-contract --etherscan-api-key ${POLYGONSCAN_API_KEY} --chain mumbai --watch ${GATED_FORWARDER_IMPL} GatedForwarder",
+    "add-gelato": "forge script script/AddTrustedForwarder.sol --sig 'run(address trustedForwarder, address gatedForwarderAddress)' --broadcast --rpc-url mumbai 0xd8253782c45a12053594b9deb72d8e8ab2fca54c"
+  }
+}

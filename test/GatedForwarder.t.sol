@@ -17,7 +17,7 @@ import "./utils/GatewayUtils.sol";
 import "./utils/ForwardUtils.sol";
 
 contract GatedForwarderTest is Test, GatewayUtils, ForwardUtils {
-    event Success(uint x);
+    event Success(uint256 x);
 
     SigUtils internal sigUtils;
 
@@ -36,7 +36,6 @@ contract GatedForwarderTest is Test, GatewayUtils, ForwardUtils {
     uint256 internal userWithPassPrivateKey;
     uint256 internal userWithoutPassPrivateKey;
     uint256 internal relayerPrivateKey;
-
 
     function setUp() public {
         string memory mnemonic = "test test test test test test test test test test test junk";
@@ -65,15 +64,10 @@ contract GatedForwarderTest is Test, GatewayUtils, ForwardUtils {
         GatedForwarder gatedForwarderImpl = new GatedForwarder();
         GatedForwarderFactory factory = new GatedForwarderFactory(address(gatedForwarderImpl));
         gatedForwarderAddress = factory.createContract(address(gatewayTokenProxy), 0, admin, trustedForwarders);
-//        gatedForwarder = new GatedForwarder(address(gatewayToken), 0);
-//        gatedForwarder.addForwarder(address(erc712Forwarder));
 
         targetContract = new TargetContract(gatedForwarderAddress);
 
         createGatekeeperNetwork(gatewayToken, 0, gatekeeper);
-
-//        gatewayToken.createNetwork(0, "TEST", false, address(0));
-//        gatewayToken.addGatekeeper(address(gatekeeper), 0);
 
         vm.prank(gatekeeper);
         gatewayToken.mint(userWithPass, 0, 0, 0, nullCharge);
@@ -82,10 +76,7 @@ contract GatedForwarderTest is Test, GatewayUtils, ForwardUtils {
     }
 
     function testAllowWithPass() public {
-        bytes memory targetData = abi.encodeWithSelector(
-            TargetContract(address(0)).testGated.selector,
-            1
-        );
+        bytes memory targetData = abi.encodeWithSelector(TargetContract(address(0)).testGated.selector, 1);
 
         MinimalForwarder.ForwardRequest memory request;
         bytes memory signature;
@@ -107,10 +98,7 @@ contract GatedForwarderTest is Test, GatewayUtils, ForwardUtils {
     }
 
     function testDisallowWithoutPass() public {
-        bytes memory targetData = abi.encodeWithSelector(
-            TargetContract(address(0)).testGated.selector,
-            1
-        );
+        bytes memory targetData = abi.encodeWithSelector(TargetContract(address(0)).testGated.selector, 1);
 
         MinimalForwarder.ForwardRequest memory request;
         bytes memory signature;

@@ -2,9 +2,8 @@
 pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
-import "./GatedForwarder.sol";
-import "forge-std/console.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./GatedForwarder.sol";
 
 contract GatedForwarderFactory is Ownable {
     address public implementationAddress;
@@ -16,16 +15,11 @@ contract GatedForwarderFactory is Ownable {
         implementationAddress = newImplementationAddress;
     }
 
-    function setImplementationAddress(
-        address newImplementationAddress
-    ) external onlyOwner {
+    function setImplementationAddress(address newImplementationAddress) external onlyOwner {
         implementationAddress = newImplementationAddress;
     }
 
-    function getSalt(
-        address gatewayTokenContract,
-        uint256 gatekeeperNetwork
-    ) internal pure returns (bytes32) {
+    function getSalt(address gatewayTokenContract, uint256 gatekeeperNetwork) internal pure returns (bytes32) {
         return keccak256(abi.encodePacked(gatewayTokenContract, gatekeeperNetwork));
     }
 
@@ -36,15 +30,8 @@ contract GatedForwarderFactory is Ownable {
         address[] calldata trustedForwarders
     ) external returns (address) {
         bytes32 salt = getSalt(gatewayTokenContract, gatekeeperNetwork);
-        // deploy a minimal proxy contract
         address proxy = Clones.cloneDeterministic(implementationAddress, salt);
-        console.log("GatedForwarderFactory.createContract: proxy=%s", proxy);
-        GatedForwarder(proxy).initialize(
-            gatewayTokenContract,
-            gatekeeperNetwork,
-            owner,
-            trustedForwarders
-        );
+        GatedForwarder(proxy).initialize(gatewayTokenContract, gatekeeperNetwork, owner, trustedForwarders);
 
         proxies.push(proxy);
 
@@ -53,14 +40,14 @@ contract GatedForwarderFactory is Ownable {
     }
 
     /**
-        * @dev Returns the address of the implementation given a particular salt
-        * @return The address of the implementation.
-        */
-    function getContractAddress(
-        address gatewayTokenContract,
-        uint256 gatekeeperNetwork,
-        address deployer
-    ) external view returns (address) {
+     * @dev Returns the address of the implementation given a particular salt
+     * @return The address of the implementation.
+     */
+    function getContractAddress(address gatewayTokenContract, uint256 gatekeeperNetwork, address deployer)
+        external
+        view
+        returns (address)
+    {
         bytes32 salt = getSalt(gatewayTokenContract, gatekeeperNetwork);
         return Clones.predictDeterministicAddress(implementationAddress, salt, deployer);
     }
