@@ -1,0 +1,23 @@
+{
+  "name": "@civic/gelato-client",
+  "description": "Gelato Client",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "ts-node": "^10.9.1",
+    "tsup": "^7.1.0",
+    "typescript": "^5.1.6",
+    "vitest": "^0.34.1"
+  },
+  "dependencies": {
+    "ethers": "^6.7.0"
+  }
+}

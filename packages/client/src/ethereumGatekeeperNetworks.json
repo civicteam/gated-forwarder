@@ -1,0 +1,87 @@
+{
+  "prod": {
+    "tgnuXXNMDLK8dy7Xm1TdeGyc95MDym4bvAQCwcW21Bf": {
+      "gatekeeperNetwork": "1"
+    },
+    "gatbGF9DvLAw3kWyn1EmH5Nh1Sqp8sTukF7yaQpSc71": {
+      "gatekeeperNetwork": "2"
+    },
+    "mos1x4hXqmmmWz5s8btUsM1aHxdY3tUvNHf7sfK37Y6": {
+      "gatekeeperNetwork": "3"
+    },
+    "ignREusXmGrscGNUesoU9mxfds9AiYTezUKex2PsZV6": {
+      "gatekeeperNetwork": "4"
+    },
+    "ni1jXzPTq1yTqo67tUmVgnp22b1qGAAZCtPmHtskqYG": {
+      "gatekeeperNetwork": "5"
+    },
+    "bni1ewus6aMxTxBi5SAfzEmmXLf8KcVFRmTfproJuKw": {
+      "gatekeeperNetwork": "6"
+    },
+    "b1gz9sD7TeH6cagodm4zTcAx6LkZ56Etisvgr6jGFQb": {
+      "gatekeeperNetwork": "7"
+    },
+    "yukonJRbdjiiSMqXmMq3mVHsVTLg7FSzEpVwZU3fzzr": {
+      "gatekeeperNetwork": "8"
+    },
+    "ign2PJfwxvYxAZpMdXgLdY4VLCnChPZWjtTeQwQfQdc": {
+      "gatekeeperNetwork": "9"
+    },
+    "uniqobk8oGh4XBLMqM68K8M2zNu3CdYX7q5go7whQiv": {
+      "gatekeeperNetwork": "10"
+    },
+    "vaa1QRNEBb1G2XjPohqGWnPsvxWnwwXF67pdjrhDSwM": {
+      "gatekeeperNetwork": "11"
+    },
+    "f1uWjF1aCEmNfrjhdRjEjFEUinqD7AXjr6XAVdj549Q": {
+      "gatekeeperNetwork": "22"
+    },
+    "fa136GTTrXLPajmYiwtprHK3pAkQJJGYqspzW1hvxJ6": {
+      "gatekeeperNetwork": "24"
+    },
+    "ag13vc1KaV5kMjp3Gb5yTq8cyZSnHPVkTHdNJ2fWXk1": {
+      "gatekeeperNetwork": "26"
+    }
+  },
+  "preprod": {
+    "tgnuXXNMDLK8dy7Xm1TdeGyc95MDym4bvAQCwcW21Bf": {
+      "gatekeeperNetwork": "1"
+    },
+    "tgaxdij8CgAbfDDkhtkvZgEtwLPrVEXTQe3L4zkA7gE": {
+      "gatekeeperNetwork": "12"
+    },
+    "tmo7YXBjHgJ74StE7inz5XkyJQ5dq9CEy5YERZfx6iZ": {
+      "gatekeeperNetwork": "13"
+    },
+    "tigoYhp9SpCDoCQmXGj2im5xa3mnjR1zuXrpCJ5ZRmi": {
+      "gatekeeperNetwork": "14"
+    },
+    "tniC2HX5yg2yDjMQEcUo1bHa44x9YdZVSqyKox21SDz": {
+      "gatekeeperNetwork": "15"
+    },
+    "tbniJdS9j7BWhUoJesjpqutC54AYr96cn2No7dJcqce": {
+      "gatekeeperNetwork": "16"
+    },
+    "tb1g4GgywqGprgbuRw8RdDuPGUPC4CFMmmNFXfBX79J": {
+      "gatekeeperNetwork": "17"
+    },
+    "tyukPUmtWLzTx7YqJus93gBQ1u3tYispTJDXnQXp7Hp": {
+      "gatekeeperNetwork": "18"
+    },
+    "tig2iQjtihM8GbWS1z5LJi9ytTkj4poeh2N3MW4n9gt": {
+      "gatekeeperNetwork": "19"
+    },
+    "tunQheuPpHhjjsbrUDp4rikqYez9UXv4SXLRHf9Kzsv": {
+      "gatekeeperNetwork": "20"
+    },
+    "tvaaHL9BSgZGLRAqUrx1Fzs2Uneb6BWGdnYuqrFoXm3": {
+      "gatekeeperNetwork": "21"
+    },
+    "ta136ftcpd8RyTYu3FGBjstD7EMXGBWrcwotdScrAKu": {
+      "gatekeeperNetwork": "23"
+    },
+    "tf1394kihohAL86BoDZkZtiRpbAKPHzCRhgjsZZn4LY": {
+      "gatekeeperNetwork": "25"
+    }
+  }
+}
