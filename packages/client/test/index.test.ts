@@ -1,6 +1,6 @@
 import {describe, it, expect} from "vitest";
 import {gate} from "../src";
-import {BaseContract, Contract} from "ethers";
+import {BaseContract} from "ethers";
 import {deriveGatedForwarderAddressForPassType} from "../src/util";
 
 const DUMMY_CONTRACT_ADDRESS = "0x1Ab2FCfee2bAEBdDb5bF632fc80A715B08E20cFd"
@@ -33,13 +33,14 @@ const ERC20_MINI_ABI = [
 
 describe("gate", () => {
     it("should wrap a transaction in a gated transaction", async () => {
-        const passType = 1n;
+        const passType = 'tgnuXXNMDLK8dy7Xm1TdeGyc95MDym4bvAQCwcW21Bf';
+        const slotId = 1n;
 
         const erc20Contract = BaseContract.from(DUMMY_CONTRACT_ADDRESS, ERC20_MINI_ABI);
         const transferTx = await erc20Contract.transfer.populateTransaction(TRANSFER_RECIPIENT, 100);
         const gatedTx = gate(transferTx, passType);
 
-        const expectedGatedForwarderContract = deriveGatedForwarderAddressForPassType(passType)
+        const expectedGatedForwarderContract = deriveGatedForwarderAddressForPassType(slotId)
 
         // some fields are retained from the original transfer
         expect(gatedTx.from).to.equal(transferTx.from);
