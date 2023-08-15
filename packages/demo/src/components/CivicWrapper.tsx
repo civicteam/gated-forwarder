@@ -36,26 +36,30 @@ export const CivicWrapper: FC<PropsWithChildren> = ({ children }) => {
         })
     }, [txHash]);
 
-    const handleTransaction = useCallback(async (tx: TransactionRequest) => {
-        if (!tx.data) throw new Error("No data");
-        if (!tx.to) throw new Error("No target");
-        if (!address) throw new Error("No address");
-        console.log("handling transaction: ", tx);
-        const request = {
-            chainId: BigInt(chainId),
-            data: hexlify(tx.data),
-            target: tx.to
-        };
-        console.log("submitting request: ", request)
-        submitSponsored(request);
-
-        return new Promise<TransactionResponse>(resolve => {
-            setTxResponseCallbacks(cbs => ([...cbs, resolve]))
-        });
-    }, [address, chainId]);
+    // const handleTransaction = useCallback(async (tx: TransactionRequest) => {
+    //     if (!tx.data) throw new Error("No data");
+    //     if (!tx.to) throw new Error("No target");
+    //     if (!address) throw new Error("No address");
+    //     console.log("handling transaction: ", tx);
+    //     const request = {
+    //         chainId: BigInt(chainId),
+    //         data: hexlify(tx.data),
+    //         target: tx.to
+    //     };
+    //     console.log("submitting request: ", request)
+    //     submitSponsored(request);
+    //
+    //     return new Promise<TransactionResponse>(resolve => {
+    //         setTxResponseCallbacks(cbs => ([...cbs, resolve]))
+    //     });
+    // }, [address, chainId]);
 
     return (
-        <GatewayProvider wallet={wallet} gatekeeperNetwork={GATEKEEPER_NETWORK} handleTransaction={handleTransaction}>
+        <GatewayProvider
+            wallet={wallet}
+            gatekeeperNetwork={GATEKEEPER_NETWORK}
+            // handleTransaction={handleTransaction}
+        >
                 {children}
         </GatewayProvider>
     )
