@@ -36,13 +36,13 @@ const convertRawPosts = (rawResults: PostResponse): Post[] => {
             }
         }).filter((post): post is Post => !!post));
 
-    rawResults.pages.forEach((page) => page.forEach((entry) => {
-        if (entry.status === "failure") return;
-        if (isRawLikeArray(entry.result)) {
-            if (entry.result.length === 0) return;
-            const targetPost = posts.find((p) => p.id === entry.result[0].postId);
+    rawResults.pages.forEach((page) => page.forEach(({status, result}) => {
+        if (status === "failure") return;
+        if (isRawLikeArray(result)) {
+            if (result.length === 0) return;
+            const targetPost = posts.find((p) => p.id === result[0].postId);
             if (!targetPost) return;
-            targetPost.likes = entry.result;
+            targetPost.likes = result;
         }
     }));
 
@@ -58,7 +58,11 @@ export const BoardProvider: FC<PropsWithChildren> = ({children}) => {
     const [posts, setPosts] = useState<Post[]>([]);
     useEffect(() => {
         if (!rawPosts || rawPosts.pages.length === 0) return;
-        setPosts(convertRawPosts(rawPosts));
+        setPosts(oldPosts => {
+            const newPosts = convertRawPosts(rawPosts)
+            const filteredPosts = oldPosts.filter((post) => !newPosts.find((p) => p.id === post.id));
+            return [...newPosts, ...filteredPosts];
+        });
     }, [rawPosts]);
 
     return (

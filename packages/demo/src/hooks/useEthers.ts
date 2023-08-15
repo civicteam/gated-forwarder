@@ -2,7 +2,6 @@ import {type PublicClient, useChainId, usePublicClient, useWalletClient, WalletC
 import {FallbackProvider, JsonRpcProvider, Web3Provider} from '@ethersproject/providers'
 import {type HttpTransport} from 'viem'
 import {useMemo} from "react";
-import {Wallet} from "@ethersproject/wallet";
 
 export function publicClientToProvider(publicClient: PublicClient) {
     const { chain, transport } = publicClient

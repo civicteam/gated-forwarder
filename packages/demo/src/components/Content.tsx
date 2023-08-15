@@ -13,7 +13,7 @@ export function Content() {
     if (!isConnected) return <></>
 
     return (
-        <>
+        <div className="mt-2">
             <NetworkSwitcher />
             <br />
             <div>Balance: {bal?.data?.formatted} ETH</div>
@@ -21,6 +21,6 @@ export function Content() {
             <WritePost />
             <Posts />
             <div>posts: { count?.toString() }</div>
-        </>
+        </div>
     )
 }

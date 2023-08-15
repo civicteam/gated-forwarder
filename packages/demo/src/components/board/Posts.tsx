@@ -12,9 +12,12 @@ export function Posts() {
         return !!count && posts.length < count;
     }, [count, posts.length]);
 
-    const reversedPosts = useMemo(() => {
-        return posts.slice().reverse();
-    }, [posts]);
+    const onNext = () => {
+        if (hasMore) {
+            console.log('fetchNextBoardsPage')
+            fetchNextBoardsPage();
+        }
+    }
 
     return (
         <div className="flex flex-col items-center overflow-auto">
@@ -22,13 +25,13 @@ export function Posts() {
                 className=""
                 height={400}
                 dataLength={posts.length}
-                next={fetchNextBoardsPage}
+                next={onNext}
                 hasMore={hasMore}
                 loader={
                     <span className="loading loading-spinner loading-sm"></span>
                 }
             >
-                {reversedPosts.map(post => (
+                {posts.map(post => (
                     // <PostView key={post.id.toString()} post={post} />
                     <div className="flex flex-wrap justify-center" key={post.id.toString()}>
                         <PostView post={post} />

@@ -1,12 +1,18 @@
 import {Post} from "../../utils/types";
 import {useBoardLike} from "../../hooks/useBoardLike";
-import {trimAddress} from "../../utils/lib";
-import {useRelayerContext} from "../../context/RelayerContext";
+import {errorMessage, trimAddress} from "../../utils/lib";
+import {useCivicStatus} from "../../hooks/useCivicStatus";
 
 type Props = { post : Post }
 export const PostView = ({ post }: Props) => {
-    const { write: onLike, receipt, isSuccess, error, isPending }
+    const { enabled } = useCivicStatus();
+    const { write, isSuccess, error, isPending }
         = useBoardLike({ postId: post.id })
+
+    const onLike = () => {
+        if (!!write) write();
+    }
+
     return (
         <div className="card bordered m-4 bg-white shadow-lg">
             <div className="card-body">
@@ -25,7 +31,7 @@ export const PostView = ({ post }: Props) => {
                     <button
                         onClick={onLike}
                         className={`mt-2 btn btn-primary btn-sm items-center ${isPending ? 'loading' : ''}`}
-                        disabled={isPending}
+                        disabled={isPending || !enabled}
                     >
                         Like
                     </button>
@@ -36,7 +42,7 @@ export const PostView = ({ post }: Props) => {
                                 Liked by: {post.likes.map(l => trimAddress(l.liker)).join(', ')}
                             </div>
                         )}
-                        {error && <div className="mt-4 text-red-500 alert alert-error">{error.message}</div>}
+                        {!!error && <div className="mt-4 text-red-500 alert alert-error">{errorMessage(error)}</div>}
                     </div>
                 </div>
             </div>

@@ -9,8 +9,9 @@
     "deploy-contract-local": "PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 forge script ../../script/demo/DeployBoard.sol --rpc-url http://localhost:8545 --broadcast"
   },
   "dependencies": {
-    "@civic/ethereum-gateway-react": "^0.13.1",
+    "@civic/ethereum-gateway-react": "/Users/daniel/code/civicteam/ociv-gatekeeper/packages/react-component/ethereum/civic-ethereum-gateway-react-v0.13.2-alpha.1.tgz",
     "@civic/gelato-client": "*",
+    "@ethersproject/bytes": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
     "@ethersproject/wallet": "^5.7.0",
     "@gelatonetwork/relay-sdk": "^4.0.0",

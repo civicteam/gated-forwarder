@@ -1,5 +1,5 @@
 import {useRelayerContext} from "../context/RelayerContext";
-import {IdentityButton} from "@civic/ethereum-gateway-react";
+import {ButtonMode, IdentityButton} from "@civic/ethereum-gateway-react";
 
 export const CivicToggle = () => {
     const { setCivic, civicEnabled } = useRelayerContext();
@@ -12,7 +12,7 @@ export const CivicToggle = () => {
                         setCivic(!civicEnabled);
                     }
                 } />
-                { civicEnabled && <IdentityButton />}
+                { civicEnabled && <IdentityButton mode={ ButtonMode.LIGHT } />}
             </label>
         </div>
     )

@@ -1,11 +1,19 @@
 import {useBoardCreatePost} from "../../hooks/useBoardCreatePost";
-import {useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useRelayerContext} from "../../context/RelayerContext";
+import {useCivicStatus} from "../../hooks/useCivicStatus";
 
 export const WritePost = () => {
+    const { enabled } = useCivicStatus();
     const [content, setContent] = useState<string>("")
     const { write, isSuccess, txHash, error, isPending }
         = useBoardCreatePost({ content })
+    const [showSuccess, setShowSuccess] = useState(false)
+    useEffect(() => {
+        if (!isSuccess) return;
+        setShowSuccess(true)
+        setTimeout(() => setShowSuccess(false), 3000)
+    }, [setShowSuccess, isSuccess])
 
     return (
         <div className="flex flex-col items-center">
@@ -19,15 +27,15 @@ export const WritePost = () => {
                 <button
                     className="btn btn-primary mt-2 w-full"
                     onClick={() => write && write()}
-                    disabled={isPending}
+                    disabled={isPending || !enabled}
                 >
                     {isPending ? "Submitting..." : "Submit"}
                 </button>
-                {isSuccess && (
+                {showSuccess && (
                     <div className="mt-2 alert alert-success">
                         <div>
                             <div className="write-post-success-message">
-                                Post submitted!
+                                Post submitted.
                             </div>
                             <div className="write-post-success-receipt">
                                 Transaction hash: {txHash}

@@ -1,4 +1,10 @@
-import {CallWithERC2771Request, GelatoRelay, RelayRequestOptions, TransactionStatusResponse} from "@gelatonetwork/relay-sdk";
+import {
+    CallWithERC2771Request,
+    GelatoRelay,
+    RelayRequestOptions,
+    SponsoredCallRequest,
+    TransactionStatusResponse
+} from "@gelatonetwork/relay-sdk";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {useEthersSignerProvider} from "./useEthers";
 import {useAccount, useChainId, usePrepareContractWrite} from "wagmi";
@@ -14,6 +20,7 @@ type Input = {
 }
 type Output = {
     submit: (request: CallWithERC2771Request) => void,
+    submitSponsored: (request: SponsoredCallRequest) => void,
     loading: boolean,
     error: unknown,
     taskStatus: TransactionStatusResponse | undefined,
@@ -32,37 +39,46 @@ const isPending = (taskState: TaskState): boolean => PENDING_STATES.includes(tas
 export const useGelato = ({ gelatoOptions }: Input): Output => {
     const ethersProvider = useEthersSignerProvider()
 
-    // a hook to submit the transaction to gelato
+    // a hook to submit the transaction to gelato using sponsoredCallERC2771
     const { mutate: submit , isLoading: isSubmitting, error: submitError, data: submitResponse } = useMutation((request: CallWithERC2771Request) => {
         if (!ethersProvider) throw new Error("No ethers provider set");
         if (!apiKey) throw new Error("No API key set");
         return relay.sponsoredCallERC2771(request, ethersProvider, apiKey, gelatoOptions);
     });
 
-    // once the task ID exists, poll gelato for its status
-    const { data: taskStatus, isLoading : isFetchingStatus, error: fetchStatusError } = useQuery({
-        queryKey: [submitResponse?.taskId ?? ""],
-        queryFn: async () => {
-            if (!submitResponse?.taskId) throw new Error("No task ID set");
-            return relay.getTaskStatus(submitResponse?.taskId);
-        },
-        enabled: !!submitResponse?.taskId,
-        refetchInterval: 1000,
-        retry: ():boolean => !!submitResponse?.taskId && !!taskStatus && isPending(taskStatus.taskState),
+    // a hook to submit the transaction to gelato using sponsoredCall
+    const { mutate: submitSponsored , isLoading: isSubmittingSponsored, error: submitSponsoredError, data: submitSponsoredResponse } = useMutation((request: SponsoredCallRequest) => {
+        if (!ethersProvider) throw new Error("No ethers provider set");
+        if (!apiKey) throw new Error("No API key set");
+        return relay.sponsoredCall(request, apiKey, gelatoOptions);
     });
 
-    console.log({
-        isSubmitting,
-        submitError,
-        submitResponse,
-        isFetchingStatus,
-        fetchStatusError,
-        taskStatus,
-    })
+    // once the task ID exists, poll gelato for its status
+    const { data: taskStatus, error: fetchStatusError } = useQuery({
+        queryKey: [submitResponse?.taskId ?? submitSponsoredResponse?.taskId ?? ""],
+        queryFn: async () => {
+            const taskId = submitResponse?.taskId ?? submitSponsoredResponse?.taskId;
+            if (!taskId) throw new Error("No task ID set");
+            return relay.getTaskStatus(taskId);
+        },
+        enabled: !!(submitResponse?.taskId ?? submitSponsoredResponse?.taskId),
+        refetchInterval: 1000,
+        retry: ():boolean => !!(submitResponse?.taskId ?? submitSponsoredResponse?.taskId) && !!taskStatus && isPending(taskStatus.taskState),
+    });
+
+    // console.log({
+    //     isSubmitting,
+    //     submitError,
+    //     submitResponse,
+    //     isFetchingStatus,
+    //     fetchStatusError,
+    //     taskStatus,
+    // })
 
   return {
       submit,
-      loading: isSubmitting,
+      submitSponsored,
+      loading: isSubmitting || isSubmittingSponsored || (!!taskStatus?.taskState && isPending(taskStatus.taskState)),
       error: submitError || fetchStatusError,
       taskStatus,
       taskId: submitResponse?.taskId,
@@ -80,7 +96,7 @@ const wagmiToRequest = (config?: WagmiPreparedTxConfig, fromAddress?: Address, c
     })
 
     return {
-        chainId,
+        chainId: BigInt(chainId),
         target: config.request.address,
         data,
         user: fromAddress,
@@ -88,12 +104,12 @@ const wagmiToRequest = (config?: WagmiPreparedTxConfig, fromAddress?: Address, c
 }
 
 export const useGelatoWagmi = (preparedTxConfig?: WagmiPreparedTxConfig, gelatoOptions?: RelayRequestOptions): HookOutput => {
-    const { address, connector } = useAccount();
+    const { address } = useAccount();
     const chainId = useChainId();
     const request = wagmiToRequest(preparedTxConfig, address, chainId);
     const { civicEnabled } = useRelayerContext();
     const gatedRequest = useCivicGate(request);
-    const { submit, loading, error, taskStatus, taskId, txHash } = useGelato({ gelatoOptions })
+    const { submit, submitSponsored, loading, error, taskStatus, taskId, txHash } = useGelato({ gelatoOptions })
 
     const submitRequest = () => {
         const requestToSubmit = civicEnabled ? gatedRequest : request;
@@ -102,6 +118,7 @@ export const useGelatoWagmi = (preparedTxConfig?: WagmiPreparedTxConfig, gelatoO
 
     return {
         submit: submitRequest,
+        submitSponsored,    // not currently using the civic gate
         loading,
         error,
         taskStatus,

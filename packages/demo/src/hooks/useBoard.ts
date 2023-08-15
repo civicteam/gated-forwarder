@@ -1,10 +1,12 @@
 import {paginatedIndexesConfig, useBlockNumber, useContractInfiniteReads} from "wagmi";
 import {boardContractConfig} from "../components/contracts";
 import {useBoardGetPost} from "./useBoardGetPost";
+import {useBoardGetPostCount} from "./useBoardGetPostCount";
 
 export const useBoard = () => {
     // used to trigger reloads
     const { data: blockNumber } = useBlockNumber();
+    const count = useBoardGetPostCount();
     const {
         data: posts,
         isLoading: isLoadingPosts,
@@ -16,6 +18,7 @@ export const useBoard = () => {
     } =
         useContractInfiniteReads({
             cacheKey: 'posts',
+            enabled: !!count,
             blockNumber,
             ...paginatedIndexesConfig(
                 (index: number) =>
@@ -31,7 +34,7 @@ export const useBoard = () => {
                             args: [BigInt(index)] as const,
                         },
                     ],
-                { start: 0, perPage: 4, direction: 'increment' },
+                { start: Number(count || 0n), perPage: 4, direction: 'decrement' },
             ),
         })
 
